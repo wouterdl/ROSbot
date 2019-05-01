@@ -1,7 +1,6 @@
 #include <ros/ros.h>
 #include <image_transport/image_transport.h>
 #include <opencv2/highgui/highgui.hpp>
-//#include <iostream>
 #include <string>
 #include <vector>
 #include <iterator>
@@ -12,6 +11,7 @@
 #include <sensor_msgs/image_encodings.h>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <std_msgs/Int64MultiArray.h>
+#include <opencv2/core/hal/interface.h>
 
 
 class Lanes
@@ -19,8 +19,7 @@ class Lanes
 
 public:
 
-	//int lane[4];
-	//int imageCV22[4];
+	std::vector<int> lanevector;
 	std::vector<cv::Point> lane;
 	void imagecallback(const sensor_msgs::ImageConstPtr& msg);
 
@@ -42,6 +41,7 @@ void Lanes::imagecallback(const sensor_msgs::ImageConstPtr& msg)
 
 	LaneDetector lanedetector;  // Create the class object
 
+
 	cv::Mat imageCV2;
 	cv::Mat img_denoise;
 	cv::Mat img_edges;
@@ -50,15 +50,8 @@ void Lanes::imagecallback(const sensor_msgs::ImageConstPtr& msg)
 	std::vector<cv::Vec4i> lines;
 	std::vector<std::vector<cv::Vec4i> > left_right_lines;
 
-	imageCV2=imageCV->image;
+	imageCV2=imageCV->image;	//taking just the image data from imageCV
 
-	//imageCV22[1]={imageCV2.at<int>(1,3)};
-	//imageCV22[2]={imageCV2.at<int>(1,4)};
-	//imageCV22[3]={imageCV2.at<int>(1,5)};
-	//imageCV3[0] = 1;
-	//imageCV3[1] = 2;
-	//imageCV3[2] = 3;
-	//imageCV3[3] = 4;
 
 	      // Denoise the image using a Gaussian filter
 	      img_denoise = lanedetector.deNoise(imageCV2);
@@ -78,9 +71,18 @@ void Lanes::imagecallback(const sensor_msgs::ImageConstPtr& msg)
 	      // Apply regression to obtain only one line for each side of the lane
 	      lane = lanedetector.regression(left_right_lines, imageCV2);
 
-				//imageCV22[0]={img_mask.at<int>(600,700)};'
+				// Converting the lane point vector to a cv Mat matrix
+				cv::Mat lanemat = cv::Mat(lane);
 
-				cv::Mat lanemat(lane);
+				// Converting cv Mat matrix to standard vector
+				if (lanemat.isContinuous()) {
+  			lanevector.assign((int*)lanemat.datastart, (int*)lanemat.dataend);
+				} 	else {
+  				for (int i = 0; i < lanemat.rows; ++i) {
+    			lanevector.insert(lanevector.end(), lanemat.ptr<int>(i), lanemat.ptr<int>(i)+lanemat.cols);
+  				}
+				}
+
 
 }
 
@@ -93,6 +95,7 @@ int main(int argc, char **argv)
 	ros::NodeHandle n;
 	Lanes lanes;
 
+
 	//Publisher
 	ros::Rate loop_rate(3);
 	ros::Publisher Hough_pub = n.advertise<std_msgs::Int64MultiArray>("Hough", 0);
@@ -104,21 +107,16 @@ int main(int argc, char **argv)
 
 	while (ros::ok())
 	{
-		//Publishing the message
-		int lanes2[] = {lanes.lanemat.at<int>(0,0), lanes.lanemat.at<int>(0,1), lanes.lanemat.at<int>(0,2), lanes.lanemat.at<int>(0,3)};
-		//int lanes2[] = {1,2,3,4};
-		//std::vector<int> lanes3 (std::begin(lanes2), std::end(lanes2));
+
+		//Setup multiarray message
 		std_msgs::Int64MultiArray lanelines;
 		lanelines.data.clear();
 		lanelines.layout.dim.push_back(std_msgs::MultiArrayDimension());
-		lanelines.layout.dim[0].size = 4;
+		lanelines.layout.dim[0].size = 8;
 		lanelines.layout.dim[0].stride = 8;
-		lanelines.layout.dim[1].size = 2;
-		lanelines.layout.dim[1].stride = 2;
 
-
-		lanelines.data.insert(lanelines.data.begin(), lanes.lanemat.begin(), lanes.lanemat.end());
-
+		//Inserting data of the two lines in the message and sending it
+		lanelines.data.insert(lanelines.data.begin(), lanes.lanevector.begin(), lanes.lanevector.end());
 		Hough_pub.publish(lanelines);
 
 		ros::spinOnce();
