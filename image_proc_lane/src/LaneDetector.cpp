@@ -25,7 +25,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #include <string>
 #include <vector>
 #include "opencv2/opencv.hpp"
-#include "/home/wouter/Documents/ros_workspace/src/image_proc_lane/include/LaneDetector.hpp"
+#include "/home/husarion/ros_workspace/src/image_proc_lane/include/LaneDetector.hpp"
 
 // IMAGE BLURRING
 /**
