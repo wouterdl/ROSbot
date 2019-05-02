@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>hough_test</name>
+  <name>draw_houghlines</name>
   <version>0.0.0</version>
-  <description>The hough_test package</description>
+  <description>The draw hough lines package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

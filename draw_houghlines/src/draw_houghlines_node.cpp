@@ -68,7 +68,7 @@ int main(int argc, char **argv)
 {
 
   //Initializing the node and class objects
-  ros::init(argc, argv, "hough_test");
+  ros::init(argc, argv, "draw_houghlines");
   ros::NodeHandle n;
   Linedata linedata;
   Imagedata imagedata;
