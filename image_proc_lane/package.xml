@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>image_proc_template</name>
+  <name>image_proc_lane</name>
   <version>0.0.0</version>
-  <description>The image_proc_template package</description>
+  <description>The image_proc_lane package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->

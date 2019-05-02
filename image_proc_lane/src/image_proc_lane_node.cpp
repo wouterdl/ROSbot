@@ -5,8 +5,8 @@
 #include <vector>
 #include <iterator>
 #include "opencv2/opencv.hpp"
-#include "/home/wouter/Documents/ros_workspace/src/image_proc_template/src/include/LaneDetector.hpp"
-#include "/home/wouter/Documents/ros_workspace/src/image_proc_template/src/LaneDetector.cpp"
+#include "/home/wouter/Documents/ros_workspace/src/image_proc_lane/include/LaneDetector.hpp"
+#include "/home/wouter/Documents/ros_workspace/src/image_proc_lane/src/LaneDetector.cpp"
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -91,7 +91,7 @@ int main(int argc, char **argv)
 {
 
   //Initializing Node
-	ros::init(argc, argv, "image_proc_template");
+	ros::init(argc, argv, "image_proc_lane");
 	ros::NodeHandle n;
 	Lanes lanes;
 
