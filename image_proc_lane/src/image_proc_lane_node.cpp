@@ -5,8 +5,8 @@
 #include <vector>
 #include <iterator>
 #include "opencv2/opencv.hpp"
-#include "/home/wouter/Documents/ros_workspace/src/image_proc_lane/include/LaneDetector.hpp"
-#include "/home/wouter/Documents/ros_workspace/src/image_proc_lane/src/LaneDetector.cpp"
+#include "/home/husarion/ros_workspace/src/image_proc_lane/include/LaneDetector.hpp"
+#include "/home/husarion/ros_workspace/src/image_proc_lane/src/LaneDetector.cpp"
 #include <cv_bridge/cv_bridge.h>
 #include <sensor_msgs/image_encodings.h>
 #include <opencv2/imgproc/imgproc.hpp>
@@ -103,7 +103,7 @@ int main(int argc, char **argv)
 	//Subscriber
 	image_transport::ImageTransport it(n);
 	image_transport::Subscriber sub;
-	sub = it.subscribe("/videofile/image_raw", 1, &Lanes::imagecallback, &lanes);
+	sub = it.subscribe("/camera/rgb/image_raw", 1, &Lanes::imagecallback, &lanes);
 
 	while (ros::ok())
 	{
