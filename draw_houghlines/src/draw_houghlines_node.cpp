@@ -76,7 +76,7 @@ int main(int argc, char **argv)
   //Subscribing to image topic
   image_transport::ImageTransport it(n);
   image_transport::Subscriber imgsub;
-  imgsub = it.subscribe("/videofile/image_raw", 1, &Imagedata::imagecallback, &imagedata);
+  imgsub = it.subscribe("/camera/rgb/image_raw", 1, &Imagedata::imagecallback, &imagedata);
 
   //Subscrbing to Hough lines topic
   ros::Subscriber linesub = n.subscribe("Hough", 10, &Linedata::linescallback, &linedata);
