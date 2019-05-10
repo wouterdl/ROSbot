@@ -10,6 +10,8 @@
 #include <opencv2/imgproc/imgproc.hpp>
 #include <std_msgs/Int64MultiArray.h>
 
+int Pointsavgb0 = 0;
+int Pointsavgt0 = 0;
 
 class Linedata    //Class for the data from the Hough lines Node
 {
@@ -21,6 +23,10 @@ public:
   cv::Point point2;
   cv::Point point3;
   cv::Point point4;
+  cv::Point point5;
+  cv::Point point6;
+  cv::Point point7;
+  cv::Point point8;
   void linescallback(const std_msgs::Int64MultiArray::ConstPtr& coords);
 };
 
@@ -35,6 +41,35 @@ void Linedata::linescallback(const std_msgs::Int64MultiArray::ConstPtr& coords)
   point2 = {Points.at<int>(0,2), Points.at<int>(0,3)};
   point3 = {Points.at<int>(0,4), Points.at<int>(0,5)};
   point4 = {Points.at<int>(0,6), Points.at<int>(0,7)};
+  //std::cout << point1.x << "," << point1.y << std::endl;
+  int Pointsavgbtm = (array[0]+array[4])/2;
+  int Pointsavgtop = (array[2]+array[6])/2;
+
+  point5 = {Pointsavgbtm, 480};
+  point6 = {Pointsavgtop, 350};
+
+
+
+  if (abs(Pointsavgbtm)>1000){
+  Pointsavgbtm=Pointsavgb0;
+}
+
+if (abs(Pointsavgtop)>1000){
+  Pointsavgtop=Pointsavgt0;
+}
+
+if (abs(Pointsavgbtm)<1000){
+  Pointsavgb0=Pointsavgbtm;
+}
+
+if (abs(Pointsavgtop)<1000){
+  Pointsavgt0=Pointsavgtop;
+}
+
+  point7 = {Pointsavgbtm, 480};
+  point8 = {Pointsavgtop, 350};
+
+
 }
 
 class Imagedata   //CLass for the data from the Image feed
@@ -82,13 +117,28 @@ int main(int argc, char **argv)
   ros::Subscriber linesub = n.subscribe("Hough", 10, &Linedata::linescallback, &linedata);
   image_transport::Publisher imgpub = it.advertise("image_lines", 1);
 
-  ros::Rate loop_rate(20);
+  ros::Rate loop_rate(5);
 
+
+    cv::Point draw1 = {40, 480};
+    cv::Point draw2 = {80, 350};
+    cv::Point draw3 = {540, 350};
+    cv::Point draw4 = {580, 480};
+  //std::cout << "n" << std::endl;
+  //std::cout << linedata.point1.x << "," << linedata.point1.y << std::endl;
   while (ros::ok())
   {
     //Drawing the Hough lines on the image feed and converting to image message
-    cv::line(imagedata.imageCV2, linedata.point1, linedata.point2, cv::Scalar(0,255,0), 3, -1);
-    cv::line(imagedata.imageCV2, linedata.point3, linedata.point4, cv::Scalar(0,255,0), 3, -1);
+    cv::line(imagedata.imageCV2, draw1, draw2 , cv::Scalar(0,0,255), 2, -1);
+    cv::line(imagedata.imageCV2, draw2, draw3 , cv::Scalar(0,0,255), 2, -1);
+    cv::line(imagedata.imageCV2, draw3, draw4 , cv::Scalar(0,0,255), 2, -1);
+    //cv::polylines(imagedata.imageCV2, pts, true, cv::Scalar(0, 0, 255), 2, -1, 0);
+    cv::line(imagedata.imageCV2, linedata.point1, linedata.point2, cv::Scalar(0,255,0), 2, -1);
+    cv::line(imagedata.imageCV2, linedata.point3, linedata.point4, cv::Scalar(0,255,0), 2, -1);
+    cv::line(imagedata.imageCV2, linedata.point5, linedata.point6, cv::Scalar(0,255,0), 2, -1);
+    cv::line(imagedata.imageCV2, linedata.point7, linedata.point8, cv::Scalar(255,0,0), 3, -1);
+
+
     sensor_msgs::ImagePtr imgmsg = cv_bridge::CvImage(std_msgs::Header(), "bgr8", imagedata.imageCV2).toImageMsg();
 
     //publishing image message
