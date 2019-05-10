@@ -56,7 +56,7 @@ cv::Mat LaneDetector::edgeDetector(cv::Mat img_noise) {
   // Convert image from RGB to gray
   cv::cvtColor(img_noise, output, cv::COLOR_RGB2GRAY);
   // Binarize gray image
-  cv::threshold(output, output, 140, 255, cv::THRESH_BINARY);
+  cv::threshold(output, output, 200, 255, cv::THRESH_BINARY);
 
   // Create the kernel [-1 0 1]
   // This kernel is based on the one found in the
@@ -83,10 +83,10 @@ cv::Mat LaneDetector::mask(cv::Mat img_edges) {
   cv::Mat output;
   cv::Mat mask = cv::Mat::zeros(img_edges.size(), img_edges.type());
   cv::Point pts[4] = {
-      cv::Point(210, 720),
-      cv::Point(550, 450),
-      cv::Point(717, 450),
-      cv::Point(1280, 720)
+      cv::Point(40, 480),
+      cv::Point(80, 350),
+      cv::Point(540, 350),
+      cv::Point(580, 480)
   };
 
   // Create a binary polygon mask
@@ -96,6 +96,8 @@ cv::Mat LaneDetector::mask(cv::Mat img_edges) {
 
   return output;
 }
+
+
 
 // HOUGH LINES
 /**
@@ -126,7 +128,7 @@ std::vector<std::vector<cv::Vec4i> > LaneDetector::lineSeparation(std::vector<cv
   size_t j = 0;
   cv::Point ini;
   cv::Point fini;
-  double slope_thresh = 0.3;
+  double slope_thresh = 0.2;
   std::vector<double> slopes;
   std::vector<cv::Vec4i> selected_lines;
   std::vector<cv::Vec4i> right_lines, left_lines;
@@ -227,7 +229,7 @@ std::vector<cv::Point> LaneDetector::regression(std::vector<std::vector<cv::Vec4
 
   // One the slope and offset points have been obtained, apply the line equation to obtain the line points
   int ini_y = inputImage.rows;
-  int fin_y = 470;
+  int fin_y = 360;
 
   double right_ini_x = ((ini_y - right_b.y) / right_m) + right_b.x;
   double right_fin_x = ((fin_y - right_b.y) / right_m) + right_b.x;
