@@ -1,0 +1,17 @@
+ <launch>
+
+
+
+ <node pkg="datmo" type="datmo" name="datmo" >
+  <param name="pub_markers" value="false" />
+  <param name="pub_vehicles_InBox" value="false" />
+  <param name="pub_vehicles_pub" value="true" />
+  <param name="pub_vel_vehicles_pub" value="false" />
+  <param name="pub_odom_pub" value="false" />
+  <param name="pub_odom_filtered_pub" value="false" />
+ </node>
+
+<node pkg="vehicle2_pkg" type="vehicle2_pkg_node" name="vehicle2_pkg_node" >
+</node>
+
+</launch>

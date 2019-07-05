@@ -1,0 +1,4 @@
+<launch>
+  <node name="rot_pkg" pkg="rot_pkg" type="rot_pkg_node">
+  </launch>
+  

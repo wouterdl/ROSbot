@@ -1,0 +1,9 @@
+<launch>
+
+  <node pkg="rot_pkg" type="rot_pkg_node" name="rot_pkg_node" output="screen">
+  </node>
+
+  <node pkg="switch_pkg" type="switch_pkg_node" name="switch_pkg_node" output="screen">
+  </node>
+
+</launch>

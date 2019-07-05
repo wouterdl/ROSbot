@@ -1,0 +1,31 @@
+<launch>
+
+  <node name="rplidarNode_b"          pkg="rplidar_ros"  type="rplidarNode" output="screen">
+    <remap from="scan" to="scan_b"/>
+  <param name="serial_port"         type="string" value="/dev/ttyUSB0"/>
+  <param name="serial_baudrate"     type="int"    value="115200"/><!--A1/A2 -->
+  <!--param name="serial_baudrate"     type="int"    value="256000"--><!--A3 -->
+  <param name="frame_id"            type="string" value="laser"/>
+  <param name="inverted"            type="bool"   value="false"/>
+  <param name="angle_compensate"    type="bool"   value="true"/>
+  </node>
+
+  <node pkg="datmo"                     type="datmo"        name="datmo_b" >
+    <remap from="scan" to="scan_b"/>
+    <remap from="vehicles" to="vehicles_b"/>
+   <param name="pub_markers"            value="false" />
+   <param name="pub_vehicles_InBox"     value="false" />
+   <param name="pub_vehicles_pub"       value="true"  />
+   <param name="pub_vel_vehicles_pub"   value="false" />
+   <param name="pub_odom_pub"           value="false" />
+   <param name="pub_odom_filtered_pub"  value="false" />
+  </node>
+
+  <node   pkg="vehicle2_pkg"  type="vehicle2_pkg_node"  name="vehicle2_pkg_node_b" >
+    <remap from="vehicles" to="vehicles_b"/>
+    <remap from="vehicles_filtered" to="vehicles_filtered_b" />
+  </node>
+
+	<node pkg="cruise_B_pkg" type="cruise_B_pkg_node" name="cruise_B_pkg_node"/>
+
+</launch>

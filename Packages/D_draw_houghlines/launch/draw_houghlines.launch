@@ -1,0 +1,4 @@
+<launch>
+    <node name="D_draw_houghlines_node" pkg="D_draw_houghlines" type="D_draw_houghlines_node" />
+
+</launch>

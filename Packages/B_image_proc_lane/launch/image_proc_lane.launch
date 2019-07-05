@@ -1,0 +1,4 @@
+<launch>
+  <node name="B_image_proc_lane_node" pkg="B_image_proc_lane" type="B_image_proc_lane_node" />
+
+</launch>

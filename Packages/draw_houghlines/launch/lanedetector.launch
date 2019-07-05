@@ -1,0 +1,10 @@
+<launch>
+  <include file="$(find astra_launch)/launch/astra.launch">
+    
+      </include>
+
+  <node pkg="timed_roslaunch" type="timed_roslaunch.sh" args="3 image_proc_lane image_proc_lane.launch" name="timed_roslaunch" output="screen" />
+
+  <node pkg="timed_roslaunch" type="timed_roslaunch.sh" args="6 draw_houghlines draw_houghlines.launch" name="timed_roslaunch1" output="screen" />
+
+</launch>

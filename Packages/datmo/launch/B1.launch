@@ -1,0 +1,4 @@
+<launch >
+    <include file="$(find B_draw_houghlines)/launch/lanedetector_B.launch"/>
+    <node pkg="timed_roslaunch" type="timed_roslaunch.sh" args="7 datmo datmolidarb.launch" name="timed_roslaunch4" output="screen" />
+</launch>
