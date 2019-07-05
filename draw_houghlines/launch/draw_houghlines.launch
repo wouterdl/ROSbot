@@ -1,4 +1,0 @@
-<launch>
-    <node name="draw_houghlines_node" pkg="draw_houghlines" type="draw_houghlines_node" />
-
-</launch> 
